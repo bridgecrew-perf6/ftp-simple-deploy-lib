@@ -113,22 +113,3 @@ export const deploy = async (options: DeployOptions): Promise<void> => {
 
   log("Disconnected! Have a great day!")
 };
-
-deploy({
-  connection: {
-    host: "localhost",
-    port: 21,
-    user: "user",
-    password: "password"
-  },
-  cleanRemoteDirectory: true,
-  sourcePath: "./dist/",
-  remotePath: "public_html/test-1/",
-  include: ["**/*"],
-  exclude: [],
-  logger: console.log,
-  replace: false,
-  excludeFromCleaning: ["index.js"]
-}).then(() => {
-  console.log("");
-});;

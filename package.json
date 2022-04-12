@@ -1,15 +1,15 @@
 {
-  "name": "ftp-simple-deploy",
+  "name": "ftp-simple-deploy-lib",
   "version": "0.0.1",
-  "description": "A simple tool to deploy your project to ftp",
+  "description": "A simple library to easily manage ftp deploys",
   "main": "dist/index.js",
-  "keywords": [],
+  "keywords": ["ftp", "deploy", "library"],
   "author": "shabashab",
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "build:run": "tsc && node ."
   },
-  "bin": "./bin/cli.js",
   "devDependencies": {
     "@types/ftp": "^0.3.33",
     "@types/glob": "^7.2.0",
