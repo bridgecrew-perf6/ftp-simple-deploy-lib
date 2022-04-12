@@ -1,0 +1,16 @@
+{
+  "name": "ftp-simple-deploy",
+  "version": "0.0.1",
+  "description": "A simple tool to deploy your project to ftp",
+  "main": "dist/index.js",
+  "keywords": [],
+  "author": "shabashab",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsc"
+  }, 
+  "bin": "./bin/cli.js",
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
+}
