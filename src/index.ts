@@ -1,4 +1,4 @@
-import {deploy as deployWithAllOptions} from "./deploy";
+import { deploy as deployWithAllOptions } from "./deploy";
 import { DeployOptions } from "./interfaces";
 
 const fullfillOptionsWithDefaults = (options: DeployOptions): Required<DeployOptions> => {

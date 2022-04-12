@@ -1,3 +1,5 @@
+import { FtpAsyncClient } from "./ftp-async-client";
+
 export type LogFunction = (str: string) => void;
 
 export interface DeployConnectionOptions {
@@ -21,4 +23,10 @@ export interface DeployOptions {
   replace?: boolean;
 
   logger?: LogFunction;
+}
+
+export interface DeployContext {
+  options: Required<DeployOptions>;
+  ftpClient: FtpAsyncClient;
+  logFunction: LogFunction;
 }
