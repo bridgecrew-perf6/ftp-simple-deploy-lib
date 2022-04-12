@@ -1,6 +1,8 @@
 import { deploy as deployWithAllOptions } from "./deploy";
 import { DeployOptions } from "./interfaces";
 
+export { DeployConnectionOptions, DeployOptions } from "./interfaces";
+
 const fullfillOptionsWithDefaults = (options: DeployOptions): Required<DeployOptions> => {
   return Object.assign({
     cleanRemoteDirectory: false,
