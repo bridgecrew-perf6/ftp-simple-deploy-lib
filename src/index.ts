@@ -1,3 +1,4 @@
+import { Options } from "ftp";
 import * as path from "path";
 import { FtpAsyncClient } from "./ftp-async-client";
 import { listGlobFiles } from "./glob.helper";
@@ -5,7 +6,7 @@ import { listGlobFiles } from "./glob.helper";
 type LogFunction = (str: string) => void;
 
 interface DeployContext {
-  options: DeployOptions;
+  options: Required<DeployOptions>;
   ftpClient: FtpAsyncClient;
   logFunction: LogFunction;
 }
@@ -21,14 +22,14 @@ export interface DeployOptions {
   sourcePath: string; 
   remotePath: string;
 
-  cleanRemoteDirectory: boolean;
+  cleanRemoteDirectory?: boolean;
   excludeFromCleaning?: string[]; //Files or directories that will be ignored when cleaning the remote directory (can only specify the files or directories in the root directory)
 
-  include: string[];
-  exclude: string[];
+  include?: string[];
+  exclude?: string[];
 
   connection: DeployConnectionOptions;
-  replace: boolean;
+  replace?: boolean;
 
   logger?: LogFunction;
 }
@@ -89,12 +90,25 @@ const transferFiles = async (files: string[], {
   }
 };
 
+const fullfillOptionsWithDefaults = (options: DeployOptions): Required<DeployOptions> => {
+  return Object.assign({
+    cleanRemoteDirectory: false,
+    exclude: [] ,
+    include: ["**/*"],
+    excludeFromCleaning: [],
+    logger: () => {},
+    replace: false,
+  } as Required<Omit<DeployOptions, "connection" | "remotePath" | "sourcePath">>, options);
+};
+
 export const deploy = async (options: DeployOptions): Promise<void> => {
+  const fullfilledOptions = fullfillOptionsWithDefaults(options);
+
   const log = options.logger || (() => {});
 
   log(`Collecting information about files...`)
 
-  const files = await listGlobFiles(options.sourcePath, options.include, options.exclude);
+  const files = await listGlobFiles(fullfilledOptions.sourcePath, fullfilledOptions.include, fullfilledOptions.exclude);
 
   log(`Found ${files.length} files.\n`);
 
@@ -105,22 +119,22 @@ export const deploy = async (options: DeployOptions): Promise<void> => {
 
   const ftpClient = new FtpAsyncClient();
 
-  log(`Initializing connection to ${options.connection.host}`);
+  log(`Initializing connection to ${fullfilledOptions.connection.host}`);
 
   await ftpClient.connect({
-    host: options.connection.host,
-    user: options.connection.user,
-    password: options.connection.password,
-    port: options.connection.port,
+    host: fullfilledOptions.connection.host,
+    user: fullfilledOptions.connection.user,
+    password: fullfilledOptions.connection.password,
+    port: fullfilledOptions.connection.port,
   });
 
   const context: DeployContext = {
     ftpClient: ftpClient,
     logFunction: log,
-    options: options
+    options: fullfilledOptions
   };
 
-  log(`Connected to ${options.connection.host} as ${options.connection.user}\n`);
+  log(`Connected to ${fullfilledOptions.connection.host} as ${options.connection.user}\n`);
 
   await prepareDeployDirectory(context);
 
