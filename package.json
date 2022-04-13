@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "A simple library to easily manage ftp deploys",
   "main": "dist/index.js",
-  "keywords": ["ftp", "deploy", "library"],
+  "keywords": [
+    "ftp",
+    "deploy",
+    "library"
+  ],
   "author": "shabashab",
   "license": "MIT",
   "scripts": {
@@ -11,12 +15,18 @@
     "build:run": "tsc && node ."
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.0",
     "@types/ftp": "^0.3.33",
     "@types/glob": "^7.2.0",
+    "@types/glob-to-regexp": "^0.4.1",
+    "@types/rmfr": "^2.0.1",
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "adm-zip": "^0.5.9",
     "ftp": "^0.3.10",
-    "glob": "^8.0.1"
+    "glob": "^8.0.1",
+    "glob-to-regexp": "^0.4.1",
+    "rmfr": "^2.0.0"
   }
 }

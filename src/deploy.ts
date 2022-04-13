@@ -1,3 +1,4 @@
+import { createBackups } from "./backup";
 import { cleanDeployDirectory } from "./cleanDeployDirectory";
 import { FtpAsyncClient } from "./ftp-async-client";
 import { listGlobFiles } from "./glob.helper";
@@ -50,6 +51,14 @@ export const deploy = async (options: Required<DeployOptions>): Promise<void> =>
   };
 
   log(`Connected to ${options.connection.host} as ${options.connection.user}\n`);
+
+  try {
+    await createBackups(context);
+  } catch (err) {
+    log(`An error occurred when creating backups.`);
+    await ftpClient.close();
+    throw err;
+  }
 
   try {
     await prepareDeployDirectory(context);

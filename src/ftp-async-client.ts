@@ -2,6 +2,7 @@ import { ListingElement, Options as ConnectionOptions }from "ftp";
 import FtpClient from "ftp";
 import {open} from "fs/promises";
 import {existsSync, fstatSync} from "fs";
+import * as path from "path";
 
 export class FtpAsyncClient {
   private _client: FtpClient;
@@ -119,6 +120,32 @@ export class FtpAsyncClient {
     });
   }
 
+  private convertEntryNameToPath(rootPath: string, entryName: string): string {
+    return path.join(rootPath, entryName);
+  }
+
+  public async listRecursively(dirPath: string): Promise<string[]> {
+    const result = [] as string[];
+
+    const entries = await this.list(dirPath);
+
+    const fileEntries = entries.filter(entry => entry.type === "-");
+    const dirEntries = entries.filter(entry => entry.type === "d");
+
+    const filePaths = fileEntries.map<string>(entry => this.convertEntryNameToPath(dirPath, entry.name));
+
+    result.push(...filePaths);
+
+    for(const entry of dirEntries) {
+      const entryPath = path.join(dirPath, entry.name);
+      const entryFiles = await this.listRecursively(entryPath);
+
+      result.push(...entryFiles);
+    }
+
+    return result;
+  }
+
   public async rmdir(path: string, recursively: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
       this._client.rmdir(path, recursively, (err) => {
@@ -134,6 +161,15 @@ export class FtpAsyncClient {
         if(err) reject(err);
         else resolve();
       });
+    });
+  }
+
+  public async get(path: string): Promise<NodeJS.ReadableStream> {
+    return new Promise((resolve, reject) => {
+      this._client.get(path, async (err, stream) => {
+        if(err) reject(err);
+        resolve(stream);
+      })
     });
   }
 }

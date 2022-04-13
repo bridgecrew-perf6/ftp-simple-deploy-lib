@@ -15,6 +15,7 @@ export interface DeployOptions {
 
   cleanRemoteDirectory?: boolean;
   excludeFromCleaning?: string[]; //Files or directories that will be ignored when cleaning the remote directory (can only specify the files or directories in the root directory)
+  excludeFromBackup?: string[];
 
   include?: string[];
   exclude?: string[];
@@ -23,6 +24,11 @@ export interface DeployOptions {
   replace?: boolean;
 
   logger?: LogFunction;
+
+  saveRemoteBackups?: boolean;
+  saveLocalBackups?: boolean;
+  backupsRemoteDirectory?: string;
+  backupsLocalDirectory?: string;
 }
 
 export interface DeployContext {
