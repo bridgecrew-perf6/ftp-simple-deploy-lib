@@ -1,6 +1,6 @@
 {
   "name": "@ftp-simple-deploy/lib",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple library to easily manage ftp deploys",
   "main": "dist/index.js",
   "keywords": [
@@ -14,7 +14,7 @@
     "prebuild": "rimraf dist/",
     "build": "pnpm run prebuild && tsc",
     "build:run": "tsc && node .",
-    "publish": "pnpm run build && pnpm publish --access public"
+    "prepublish": "pnpm run build"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.0",
