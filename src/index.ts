@@ -31,19 +31,3 @@ export const deploy = async (options: DeployOptions): Promise<void> => {
   const fullfilledOptions = fullfillOptionsWithDefaults(options);
   await deployWithAllOptions(fullfilledOptions);
 };
-
-deploy({
-  connection: {
-    host: "localhost",
-    user: "user",
-    password: "password",
-    port: 21
-  },
-  remotePath: "public_html/test",
-  sourcePath: "dist/",
-  logger: console.log,
-  saveLocalBackups: true,
-  saveRemoteBackups: true,
-  backupsRemoteDirectory: "backups",
-  backupsLocalDirectory: "OH_SHIT"
-}).then(() => {});
