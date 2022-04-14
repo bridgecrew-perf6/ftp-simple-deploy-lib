@@ -11,12 +11,17 @@ const prepareDeployDirectory = async (context: DeployContext): Promise<void> => 
 
   const directoryExists = await ftpClient.dirExists(options.remotePath);
 
+  logFunction("Preparing deploy directory...");
+
   if(!directoryExists) {
     logFunction(`Remote directory ${options.remotePath} does not exist. Creating a directory`);
     await ftpClient.mkdir(options.remotePath, true);
   } else if(options.cleanRemoteDirectory) {
-    cleanDeployDirectory(context);
+    logFunction("Cleaning deploy directory...\n");
+    await cleanDeployDirectory(context);
   }
+  
+  logFunction("Deploy directory has been successfully prepared\n");
 };
 
 export const deploy = async (options: Required<DeployOptions>): Promise<void> => {
