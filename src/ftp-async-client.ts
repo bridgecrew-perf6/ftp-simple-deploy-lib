@@ -74,6 +74,8 @@ export class FtpAsyncClient {
         if(err) reject(err);
         else resolve();
       });
+
+      await sourceFile.close();
     });
   }
 
